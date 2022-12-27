@@ -73,18 +73,15 @@ const handleSubmit = async (e) => {
   loader(messageDiv)
 
   //fetch data from server
-  const response = await fetch(
-    'https://chat-gpt-ai-app-using-java-script.vercel.app/',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: data.get('prompt'),
-      }),
-    }
-  )
+  const response = await fetch('https://chatgpt-ai-app.onrender.com', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: data.get('prompt'),
+    }),
+  })
   clearInterval(loadInterval)
   messageDiv.innerHTML = ''
 
