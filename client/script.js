@@ -12,7 +12,7 @@ function loader(element) {
   loadInterval = setInterval(() => {
     element.textContent += '.'
 
-    if (element.textContent === '....') {
+    if (element.textContext === '....') {
       element.textContent = ''
     }
   }, 300)
@@ -71,10 +71,35 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId)
 
   loader(messageDiv)
+
+  //fetch data from server
+  const response = await fetch('http://localhost:3000', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      prompt: data.get('prompt'),
+    }),
+  })
+  clearInterval(loadInterval)
+  messageDiv.innerHTML = ''
+
+  if (response.ok) {
+    const data = await response.json()
+    const parsedData = data.bot.trim()
+
+    typeText(messageDiv, parsedData)
+  } else {
+    const err = await response.text()
+
+    messageDiv.innerHTML = 'someting went wrong'
+    console.log(err)
+  }
 }
 
 form.addEventListener('submit', handleSubmit)
-// enterkey event once pressing the enterkey (13 is enter key)
+// submit with enterkey once pressing it (13 is enter key)
 form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e)

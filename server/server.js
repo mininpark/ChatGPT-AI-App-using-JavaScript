@@ -6,11 +6,11 @@ import { Configuration, OpenAIApi } from 'openai'
 
 dotenv.config()
 
-const configuaration = new Configuration({
+const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-const openAi = new OpenAIApi(configuaration)
+const openAi = new OpenAIApi(configuration)
 
 const app = express()
 app.use(cors())
@@ -30,10 +30,11 @@ app.post('/', async (req, res) => {
       model: 'text-davinci-003',
       prompt: `${prompt}`,
       temperature: 0.3,
-      max_tokens: 1,
+      max_tokens: 3000,
       top_p: 1,
       frequency_penalty: 0.5,
       presence_penalty: 0,
+      stop: '?',
     })
 
     res.status(200).send({
